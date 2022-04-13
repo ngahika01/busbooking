@@ -11,11 +11,18 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { useTheme } from "@emotion/react";
+import { logout } from "../actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const NavBar = () => {
+  const { palette } = useTheme();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -33,6 +40,11 @@ const NavBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <AppBar position="static">
@@ -44,7 +56,7 @@ const NavBar = () => {
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
           >
-            LOGO
+            Bus Booking System
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -76,11 +88,25 @@ const NavBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography variant="subtitle1">Home</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography variant="subtitle1">About</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography variant="subtitle1">My bookings</Typography>
+              </MenuItem>
+              {userInfo && userInfo.isAdmin && (
+                <>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography variant="subtitle1">All bookings</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography variant="subtitle1">Buses</Typography>
+                  </MenuItem>
+                </>
+              )}
             </Menu>
           </Box>
           <Typography
@@ -89,18 +115,48 @@ const NavBar = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
-            LOGO
+            Bus Booking System
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button
+              sx={{
+                color: palette.primary.contrastText,
+              }}
+            >
+              Home
+            </Button>
+            <Button
+              sx={{
+                color: palette.primary.contrastText,
+              }}
+            >
+              My Bookings
+            </Button>
+            <Button
+              sx={{
+                color: palette.primary.contrastText,
+              }}
+            >
+              About
+            </Button>
+            {userInfo && userInfo.isAdmin && (
+              <>
+                <Button
+                  sx={{
+                    color: palette.primary.contrastText,
+                  }}
+                >
+                  Bookings
+                </Button>
+                <Button
+                  sx={{
+                    color: palette.primary.contrastText,
+                  }}
+                >
+                  Buses
+                </Button>
+              </>
+            )}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -125,11 +181,18 @@ const NavBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
+              <MenuItem onClick={handleCloseUserMenu}>My account</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleCloseUserMenu();
+                  handleLogout();
+                  navigate("/", { replace: true });
+                  toast("Logged out successfully!");
+                }}
+              >
+                Logout
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

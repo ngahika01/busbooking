@@ -34,15 +34,16 @@ const LoginScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, success, error, userInfo } = userLogin;
 
-  if (userInfo) {
-    navigate("/dashboard", { replace: true });
-    toast(`Logged in as ${userInfo.name}`);
-  }
+
 
   useEffect(() => {
     if (success) {
-      navigate("/dashboard", { replace: true });
+      navigate("/home", { replace: true });
     }
+      if (userInfo) {
+        navigate("/home", { replace: true });
+        toast(`Logged in as ${userInfo.name}`);
+      }
   }, [userInfo, navigate, success, dispatch]);
 
   const handleSubmit = async ({ email, password }) => {

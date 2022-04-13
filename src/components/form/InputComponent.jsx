@@ -3,7 +3,7 @@ import { useFormikContext } from "formik";
 import React from "react";
 
 const InputComponent = ({ label, type, ...otherProps }) => {
-  const { setFieldTouched, errors, touched, setFieldValue, values } =
+  const { setFieldTouched, errors, touched, setFieldValue, values, disabled } =
     useFormikContext();
   return (
     <FormControl fullWidth>
@@ -13,6 +13,7 @@ const InputComponent = ({ label, type, ...otherProps }) => {
         label={label}
         type={type}
         fullWidth
+        disabled={disabled}
         margin="normal"
         variant="outlined"
         error={touched[label] && !!errors[label]}
