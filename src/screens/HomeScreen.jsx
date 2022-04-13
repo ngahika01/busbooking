@@ -34,6 +34,7 @@ const HomeScreen = () => {
         sx={{
           p: {
             md: 10,
+            xs: 5,
           },
         }}
       >

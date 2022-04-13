@@ -10,6 +10,9 @@ import HomeScreen from "./screens/HomeScreen";
 import NavBar from "./components/NavBar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ListBuses from "./screens/bus/ListBuses";
+import CreateBus from "./screens/bus/CreateBus";
+import EditBus from "./screens/bus/EditBus";
 
 const App = () => {
   return (
@@ -25,6 +28,9 @@ const App = () => {
             </Routes>
             <Routes>
               <Route path="/home" element={<HomeScreen />} />
+              <Route path="/buses" element={<ListBuses />} />
+              <Route path="/createBus" element={<CreateBus />} />
+              <Route path="/buses/:id" element={<EditBus />} />
             </Routes>
           </Router>
         </Grid>

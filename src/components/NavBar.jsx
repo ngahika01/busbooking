@@ -102,7 +102,12 @@ const NavBar = () => {
                   <MenuItem onClick={handleCloseNavMenu}>
                     <Typography variant="subtitle1">All bookings</Typography>
                   </MenuItem>
-                  <MenuItem onClick={handleCloseNavMenu}>
+                  <MenuItem
+                    onClick={() => {
+                      navigate("/buses");
+                      handleCloseNavMenu();
+                    }}
+                  >
                     <Typography variant="subtitle1">Buses</Typography>
                   </MenuItem>
                 </>
@@ -149,6 +154,10 @@ const NavBar = () => {
                   Bookings
                 </Button>
                 <Button
+                  onClick={() => {
+                    navigate("/buses");
+                  }}
+                  
                   sx={{
                     color: palette.primary.contrastText,
                   }}
