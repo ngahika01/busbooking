@@ -2,6 +2,8 @@ import * as React from "react";
 import {
   Avatar,
   Backdrop,
+  Box,
+  Button,
   CircularProgress,
   Grid,
   Link,
@@ -16,6 +18,7 @@ import { toast } from "react-toastify";
 import { deleteBus, listBuses } from "../../actions/busActions";
 import DataGridComponent from "../../components/DataGridComponent";
 import NavBar from "../../components/NavBar";
+import { DataGrid } from "@mui/x-data-grid";
 
 export default function ListBuses() {
   const { palette } = useTheme();
@@ -52,7 +55,7 @@ export default function ListBuses() {
       renderCell: (params) => {
         return (
           <>
-            <Link href={`/buses/${params.row._id}`}>
+            {/* <Link href={`/buses/${params.row._id}`}>
               <ModeEditOutlineOutlined
                 style={{
                   color: palette.primary.main,
@@ -60,7 +63,7 @@ export default function ListBuses() {
                   marginRight: "10px",
                 }}
               />
-            </Link>
+            </Link> */}
             <DeleteOutline
               className="delIcon"
               sx={{
@@ -86,7 +89,7 @@ export default function ListBuses() {
   };
 
   const busList = useSelector((state) => state.busList);
-  const { loading, error, busses } = busList;
+  const { loading, error, buses } = busList;
 
   React.useEffect(() => {
     dispatch(listBuses());
@@ -94,35 +97,54 @@ export default function ListBuses() {
 
   return (
     <>
-        <NavBar />
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={12}>
-          {loading && (
-            <Backdrop
-              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={true}
+      <NavBar />
+      <Box
+        sx={{
+          p: {
+            md: 5,
+            xs: 5,
+          },
+        }}
+      >
+        <Typography
+          variant="h4"
+          component="div"
+          style={{ textAlign: "center" }}
+        >
+          Bus List
+        </Typography>
+        <Grid container spacing={5}>
+          <Grid item xs={12}>
+            <div
+              style={{
+                height: "70vh",
+                width: "100%",
+              }}
             >
-              <CircularProgress color="inherit" />
-            </Backdrop>
-          )}
-
-          {error && (
-            <Typography variant="h6" color="error">
-              {error}
-            </Typography>
-          )}
-
-          {busses && (
-            <DataGridComponent
-              buttonTitle={"Add Bus"}
-              onClick={() => navigate("/createBus")}
-              title={"Bus List"}
-              columns={columns}
-              rows={busses}
-            />
-          )}
+              {loading && (
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={true}
+                >
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+              )}
+              {buses && (
+                <DataGridComponent
+                  onClick={() => navigate("/createBus")}
+                  title="Bus List"
+                  buttonTitle={`Create New Bus`}
+                  rows={buses}
+                  columns={columns}
+                />
+              )}
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </>
   );
 }

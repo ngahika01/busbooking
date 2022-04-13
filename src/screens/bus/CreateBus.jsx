@@ -1,6 +1,7 @@
 import React from "react";
 import { useTheme } from "@emotion/react";
 import {
+  Alert,
   AppBar,
   Backdrop,
   Button,
@@ -27,12 +28,12 @@ import Form from "../../components/form/Form";
 import NavBar from "../../components/NavBar";
 import { CustomSelectComponent } from "../../components/form/CustomSelectComponent";
 import { useState } from "react";
+import { createBus } from "../../actions/busActions";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .required("Name is required")
     .min(3, "Name must be at least 3 characters"),
-  seats: Yup.array().required("Seats is required"),
   numberPlate: Yup.string().required("Number Plate is required"),
 });
 
@@ -48,7 +49,6 @@ const CreateBus = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const [inindivualPrice, setIndividualPrice] = useState([]);
   const [multiInput, setMultiInput] = useState([
     { seatNumber: "", available: true },
   ]);
@@ -66,15 +66,23 @@ const CreateBus = () => {
     }
   }, [userInfo, dispatch, navigate, success]);
 
-  const handleSubmit = async ({ name, status }) => {
-    // dispatch(createStore(name, status));
+  const handleSubmit = async ({ name, numberPlate }) => {
+    dispatch(
+      createBus({
+        name,
+        numberPlate,
+        seats: multiInput,
+      })
+    );
   };
 
   // handle input change
   const handleInputChange = (e, index) => {
-    const { name, value  } = e.target;
+    const { name, value } = e.target;
+    const { checked } = e.target.checked;
     const inputList = [...multiInput];
     inputList[index][name] = value;
+    inputList[index].available = checked;
     setMultiInput(inputList);
   };
 
@@ -91,7 +99,6 @@ const CreateBus = () => {
     e.preventDefault();
     setMultiInput([...multiInput, { seatNumber: "", available: true }]);
   };
-  console.log(multiInput);
   return (
     <>
       <NavBar />
@@ -103,6 +110,14 @@ const CreateBus = () => {
           },
         }}
       >
+        {
+          error && (
+            <Alert severity="error">
+              {error}
+            </Alert>
+          )
+        }
+
         <Typography
           style={{
             textAlign: "center",
@@ -119,7 +134,6 @@ const CreateBus = () => {
             onSubmit={handleSubmit}
             initialValues={{
               name: "",
-              seats: "",
               numberPlate: "",
             }}
           >
@@ -149,7 +163,7 @@ const CreateBus = () => {
                       <TextField
                         name="seatNumber"
                         label="seatNumber"
-                        value={input.qty}
+                        value={input.seatNumber}
                         type="default"
                         required
                         onChange={(e) => {
@@ -193,7 +207,7 @@ const CreateBus = () => {
               </Grid>
             </>
             <Grid item xs={12}>
-              <SubmitButton title={"Continue"} />
+              <SubmitButton title={"Save Bus"} />
             </Grid>
           </Form>
         </Grid>

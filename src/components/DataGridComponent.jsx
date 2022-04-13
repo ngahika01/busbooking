@@ -19,43 +19,34 @@ const DataGridComponent = ({ title, buttonTitle, columns, rows, onClick }) => {
 
   return (
     <>
-      <Container
-        sx={{
-          pt: 10,
-        }}
-        style={{ height: "90vh" }}
-      >
+      <>
         <Box
           style={{
-            display: "flex",
-            flexDirection: "row-reverse",
-            alignItems: "center",
-            justifyContent: "space-between",
+            height: "100vh",
+            width: "100%",
           }}
         >
           <Typography variant="h5" component="h2">
             {title}
           </Typography>
-
           <Button variant="contained" onClick={onClick} color="primary">
             {buttonTitle}
           </Button>
+          {
+            <DataGrid
+              style={{ height: "100vh" }}
+              rows={rows}
+              columns={columns}
+              pageSize={7}
+              getRowId={(row) => row._id}
+              disableSelectionOnClick
+              components={{
+                Toolbar: GridToolbar,
+              }}
+            />
+          }{" "}
         </Box>
-
-        {
-          <DataGrid
-            style={{ height: "100%" }}
-            rows={rows}
-            columns={columns}
-            pageSize={7}
-            getRowId={(row) => row._id}
-            disableSelectionOnClick
-            components={{
-              Toolbar: GridToolbar,
-            }}
-          />
-        }
-      </Container>
+      </>
     </>
   );
 };
