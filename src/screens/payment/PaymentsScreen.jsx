@@ -11,7 +11,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NavBar from "../../components/NavBar";
 import { io } from "socket.io-client";
-import { createPayment } from "../../actions/paymentActions";
+import { createPayment, updatePayment } from "../../actions/paymentActions";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 const socket = io("http://localhost:5000");
@@ -21,18 +21,24 @@ const PaymentsScreen = () => {
   const { userInfo } = userLogin;
   const [ld, setLd] = React.useState(false);
   const [feedback, setFeedback] = React.useState(null);
+  const[id,setId] = React.useState(null)
 
   socket.on("querying", (data) => {
     setLd(true);
+    setId(data.CheckoutRequestID);
   });
 
   socket.on("queried", (data) => {
     {
       setLd(false);
       setFeedback(data);
+
     }
   });
   console.log(feedback);
+
+  const paymentUpdateToPaid  = useSelector((state) => state.paymentUpdateToPaid);
+  const { loading, success } = paymentUpdateToPaid;
 
   const bookingSave = useSelector((state) => state.bookingSave);
   const { booking: bk } = bookingSave;
@@ -47,7 +53,11 @@ const PaymentsScreen = () => {
         replace: true,
       });
     }
-  }, [feedback, navigate]);
+    if(feedback === "The service request is processed successfully"){
+      dispatch(updatePayment(id))
+    }
+
+  }, [feedback, navigate, dispatch,id]);
 
   const handlePay = (e) => {
     e.preventDefault();

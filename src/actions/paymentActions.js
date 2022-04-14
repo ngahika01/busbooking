@@ -17,6 +17,11 @@ import {
   PAYMENT_UPDATE_FAIL,
   PAYMENT_UPDATE_REQUEST,
   PAYMENT_UPDATE_SUCCESS,
+  PAYMENT_UPDATE_TO_CANCELLED_FAIL,
+  PAYMENT_UPDATE_TO_CANCELLED_REQUEST,
+  PAYMENT_UPDATE_TO_CANCELLED_SUCCESS,
+  PAYMENT_UPDATE_TO_PAID_REQUEST,
+  PAYMENT_UPDATE_TO_PAID_SUCCESS,
 } from "../constants/paymentConstants";
 
 export const createPayment = (booking) => async (dispatch, getState) => {
@@ -191,3 +196,79 @@ export const deletePayment = (id) => async (dispatch, getState) => {
     });
   }
 };
+
+export const updateToPiad = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PAYMENT_UPDATE_TO_PAID_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put(
+      `${url}/payments/updateToPaid/${id}`,
+      {},
+      config
+    );
+    dispatch({
+      type: PAYMENT_UPDATE_TO_PAID_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: PAYMENT_UPDATE_TO_CANCELLED_FAIL,
+      payload: message,
+    });
+  }
+}
+
+export const updateToCancelled = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PAYMENT_UPDATE_TO_CANCELLED_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put(
+      `${url}/payments/updateToCancelled/${id}`,
+      {},
+      config
+    );
+    dispatch({
+      type: PAYMENT_UPDATE_TO_CANCELLED_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: PAYMENT_UPDATE_TO_CANCELLED_FAIL,
+      payload: message,
+    });
+  }
+}

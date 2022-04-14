@@ -17,6 +17,14 @@ import {
   PAYMENT_DELETE_SUCCESS,
   PAYMENT_DELETE_FAIL,
   PAYMENT_DELETE_RESET,
+  PAYMENT_UPDATE_TO_PAID_REQUEST,
+  PAYMENT_UPDATE_TO_PAID_SUCCESS,
+  PAYMENT_UPDATE_TO_PAID_FAIL,
+  PAYMENT_UPDATE_TO_CANCELLED_REQUEST,
+  PAYMENT_UPDATE_TO_CANCELLED_SUCCESS,
+  PAYMENT_UPDATE_TO_CANCELLED_FAIL,
+  PAYMENT_UPDATE_TO_CANCELLED_RESET,
+  PAYMENT_UPDATE_TO_PAID_RESET,
 } from "../constants/paymentConstants";
 
 export const paymentCreateReducer = (state = {}, action) => {
@@ -109,3 +117,33 @@ export const paymentDeleteReducer = (state = {}, action) => {
       return {};
   }
 };
+
+export const paymentUpdateToPaidReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PAYMENT_UPDATE_TO_PAID_REQUEST:
+      return { loading: true };
+    case PAYMENT_UPDATE_TO_PAID_SUCCESS:
+      return { loading: false, success: true, payment: action.payload };
+    case PAYMENT_UPDATE_TO_PAID_FAIL:
+      return { loading: false, error: action.payload };
+      case PAYMENT_UPDATE_TO_PAID_RESET:
+      return {};
+    default:
+      return state;
+  }
+}
+
+export const paymentUpdateToCancelled = (state = {}, action) => {
+  switch (action.type) {
+    case PAYMENT_UPDATE_TO_CANCELLED_REQUEST:
+      return { loading: true };
+    case PAYMENT_UPDATE_TO_CANCELLED_SUCCESS:
+      return { loading: false, success: true, payment: action.payload };
+    case PAYMENT_UPDATE_TO_CANCELLED_FAIL:
+      return { loading: false, error: action.payload };
+      case PAYMENT_UPDATE_TO_CANCELLED_RESET:
+      return {};
+    default:
+      return state;
+  }
+}

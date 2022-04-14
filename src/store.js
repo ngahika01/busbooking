@@ -26,6 +26,8 @@ import {
   paymentGetReducer,
   paymentListReducer,
   paymentUpdateReducer,
+  paymentUpdateToCancelled,
+  paymentUpdateToPaidReducer,
 } from "./reducers/paymentReducers";
 
 const reducer = combineReducers({
@@ -49,6 +51,8 @@ const reducer = combineReducers({
   paymentGet: paymentGetReducer,
   paymentDelete: paymentDeleteReducer,
   paymentUpdate: paymentUpdateReducer,
+  paymentUpdateToPaid: paymentUpdateToPaidReducer,
+  paymentCancel: paymentUpdateToCancelled,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
