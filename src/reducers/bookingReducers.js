@@ -29,7 +29,7 @@ export const bookingCreateReducer = (state = {}, action) => {
     case BOOKING_CREATE_SUCCESS:
       return {
         loading: false,
-        bus: action.payload,
+        booking: action.payload,
         success: true,
       };
     case BOOKING_CREATE_FAIL:
@@ -54,7 +54,7 @@ export const bookingListReducer = (state = {}, action) => {
     case BOOKING_LIST_SUCCESS:
       return {
         loading: false,
-        buses: action.payload,
+        bookings: action.payload,
         success: true,
       };
     case BOOKING_LIST_FAIL:
@@ -72,7 +72,7 @@ export const bookingGetReducer = (state = {}, action) => {
     case BOOKING_GET_REQUEST:
       return { loading: true, ...state };
     case BOOKING_GET_SUCCESS:
-      return { loading: false, bus: action.payload, success: true };
+      return { loading: false, booking: action.payload, success: true };
     case BOOKING_GET_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -80,16 +80,16 @@ export const bookingGetReducer = (state = {}, action) => {
   }
 };
 
-export const bookingUpdateReducer = (state = { BUS: {} }, action) => {
+export const bookingUpdateReducer = (state = { booking: {} }, action) => {
   switch (action.type) {
     case BOOKING_UPDATE_REQUEST:
       return { loading: true };
     case BOOKING_UPDATE_SUCCESS:
-      return { loading: false, success: true, bus: action.payload };
+      return { loading: false, success: true, booking: action.payload };
     case BOOKING_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case BOOKING_UPDATE_RESET:
-      return { BUS: {} };
+      return {};
     default:
       return state;
   }
@@ -109,5 +109,3 @@ export const bookingDeleteReducer = (state = {}, action) => {
       return {};
   }
 };
-
-
