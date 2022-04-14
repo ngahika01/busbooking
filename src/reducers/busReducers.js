@@ -18,6 +18,10 @@ import {
   BUS_DELETE_FAIL,
   BUS_DELETE_RESET,
   SAVE_DETAILS,
+  UPDATE_SEAT_TO_BOOKED_REQUEST,
+  UPDATE_SEAT_TO_BOOKED_SUCCESS,
+  UPDATE_SEAT_TO_BOOKED_FAIL,
+  UPDATE_SEAT_TO_BOOKED_RESET,
 } from "../constants/busConstants";
 
 export const busCreateReducer = (state = {}, action) => {
@@ -115,6 +119,21 @@ export const saveDetailsReducer = (state = {}, action) => {
   switch (action.type) {
     case SAVE_DETAILS:
       return { details: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const updateSeatToBookedReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_SEAT_TO_BOOKED_REQUEST:
+      return { loading: true };
+    case UPDATE_SEAT_TO_BOOKED_SUCCESS:
+      return { loading: false, success: true, bus: action.payload };
+    case UPDATE_SEAT_TO_BOOKED_FAIL:
+      return { loading: false, error: action.payload };
+    case UPDATE_SEAT_TO_BOOKED_RESET:
+      return {};
     default:
       return state;
   }

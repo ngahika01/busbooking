@@ -18,6 +18,9 @@ import {
   BUS_UPDATE_REQUEST,
   BUS_UPDATE_SUCCESS,
   SAVE_DETAILS,
+  UPDATE_SEAT_TO_BOOKED_FAIL,
+  UPDATE_SEAT_TO_BOOKED_REQUEST,
+  UPDATE_SEAT_TO_BOOKED_SUCCESS,
 } from "../constants/busConstants";
 
 export const createBus = (bus) => async (dispatch, getState) => {
@@ -195,3 +198,36 @@ export const detailsSave = (details) => async (dispatch) => {
     payload: details,
   });
 };
+
+export const updateSeatToPaid =
+  (id, seatNumber) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: UPDATE_SEAT_TO_BOOKED_REQUEST,
+      });
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      await axios.put(`${url}/buses/${id}`, seatNumber, config);
+      dispatch({
+        type: UPDATE_SEAT_TO_BOOKED_SUCCESS,
+      });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+        dispatch(logout());
+      }
+      dispatch({
+        type: UPDATE_SEAT_TO_BOOKED_FAIL,
+        payload: message,
+      });
+    }
+  };

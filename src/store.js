@@ -8,6 +8,7 @@ import {
   busListReducer,
   busUpdateReducer,
   saveDetailsReducer,
+  updateSeatToBookedReducer,
 } from "./reducers/busReducers";
 
 import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
@@ -33,6 +34,7 @@ const reducer = combineReducers({
   bookingUpdate: bookingUpdateReducer,
   bookingList: bookingListReducer,
   bookigngGet: bookingGetReducer,
+  updateSeatToBooked: updateSeatToBookedReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

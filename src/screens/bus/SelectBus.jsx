@@ -23,6 +23,8 @@ import { getBus, listBuses } from "../../actions/busActions";
 import { useFormikContext } from "formik";
 import { useTheme } from "@emotion/react";
 import moment from "moment";
+import { createBooking } from "../../actions/bookingActions";
+import { toast } from "react-toastify";
 
 const validationSchema = Yup.object().shape({
   bus: Yup.string().required("Bus is required"),
@@ -31,7 +33,9 @@ const validationSchema = Yup.object().shape({
 const SelectBus = () => {
   const [selected, setSelected] = React.useState("");
 
-  const [seat, setSeat] = React.useState(null);
+  const [seat, setSeat] = React.useState([]);
+
+  console.log([seat],"ff");
 
   console.log(selected);
   const [id, setId] = React.useState("");
@@ -49,6 +53,14 @@ const SelectBus = () => {
 
   const dispatch = useDispatch();
 
+  const bookingCreate = useSelector((state) => state.bookingCreate);
+  const {
+    booking,
+    loading: loadingCreate,
+    error: errorCreate,
+    success,
+  } = bookingCreate;
+
   React.useEffect(() => {
     if (!userInfo) {
       navigate("/", {
@@ -59,7 +71,11 @@ const SelectBus = () => {
     if (id !== "") {
       dispatch(getBus(id));
     }
-  }, [userInfo, navigate, dispatch, id]);
+    if (success) {
+      navigate("/booking/pay");
+      toast.success("Booking created successfully");
+    }
+  }, [userInfo, navigate, dispatch, id, success]);
 
   const handleSubmit = (values) => {};
   const { palette } = useTheme();
@@ -67,13 +83,25 @@ const SelectBus = () => {
   const saveDetails = useSelector((state) => state.saveDetails);
   const { details } = saveDetails;
 
-  console.log(details);
-  
-
-
   const handleBooking = () => {
-
-  }
+    dispatch(
+      createBooking({
+        origin: details.origin,
+        destination: details.destination,
+        departureDate: details.departureDate,
+        departureTime: details.departureTime,
+        seatBooked: [
+          {
+            seatNumber: seat,
+          },
+        ],
+        price: 1500,
+        bus: bus._id,
+      })
+      //update bus seat to not available
+      
+    );
+  };
 
   return (
     <>
@@ -98,19 +126,24 @@ const SelectBus = () => {
         </Typography>
         <br />
         <Grid container spacing={3}>
-          {loading && (
-            <Backdrop
-              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={true}
-            >
-              <CircularProgress color="inherit" />
-            </Backdrop>
-          )}
-          {error && (
-            <Alert severity="error" color="error">
-              {error}{" "}
-            </Alert>
-          )}
+          {loading ||
+            (loadingCreate && (
+              <Backdrop
+                sx={{
+                  color: "#fff",
+                  zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={true}
+              >
+                <CircularProgress color="inherit" />
+              </Backdrop>
+            ))}
+          {error ||
+            (errorCreate && (
+              <Alert severity="error" color="error">
+                {error || errorCreate}{" "}
+              </Alert>
+            ))}
           <Form
             validationSchema={validationSchema}
             onSubmit={handleSubmit}

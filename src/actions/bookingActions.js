@@ -18,7 +18,7 @@ import {
   BOOKING_UPDATE_REQUEST,
   BOOKING_UPDATE_SUCCESS,
   SAVE_DETAILS,
-} from "../constants/busConstants";
+} from "../constants/bookingConstants";
 
 export const createBooking = (booking) => async (dispatch, getState) => {
   try {
