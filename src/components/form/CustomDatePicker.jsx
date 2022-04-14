@@ -10,12 +10,13 @@ export default function CustomDatePicker({ label }) {
   const [value, setValue] = React.useState(null);
   const { setFieldTouched, errors, touched, setFieldValue, values } =
     useFormikContext();
+    
 
   return (
     <FormControl fullWidth>
       <LocalizationProvider dateAdapter={DateAdapter}>
         <DatePicker
-          showTodayButton={false}
+          showTodayButton={true}
           label={label}
           onBlur={() => setFieldTouched(label, true)}
           value={values[label]}

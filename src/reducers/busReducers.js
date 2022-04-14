@@ -17,6 +17,7 @@ import {
   BUS_DELETE_SUCCESS,
   BUS_DELETE_FAIL,
   BUS_DELETE_RESET,
+  SAVE_DETAILS,
 } from "../constants/busConstants";
 
 export const busCreateReducer = (state = {}, action) => {
@@ -107,5 +108,14 @@ export const busDeleteReducer = (state = {}, action) => {
       return state;
     case BUS_DELETE_RESET:
       return {};
+  }
+};
+
+export const saveDetailsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SAVE_DETAILS:
+      return { details: action.payload };
+    default:
+      return state;
   }
 };

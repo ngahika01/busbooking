@@ -5,7 +5,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useFormikContext } from "formik";
 import { Autocomplete, FormHelperText, TextField } from "@mui/material";
-export const CustomSelectComponent = ({ name, item }) => {
+
+export default function CustomSelectComponent({ name, item }) {
   const { setFieldTouched, errors, touched, setFieldValue, values } =
     useFormikContext();
 
@@ -54,4 +55,4 @@ export const CustomSelectComponent = ({ name, item }) => {
       )}
     </>
   );
-};
+}

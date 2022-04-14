@@ -1,7 +1,24 @@
 import axios from "axios";
 import { url } from "../config/url";
 import { logout } from "./userActions";
-import { BUS_CREATE_FAIL, BUS_CREATE_REQUEST, BUS_CREATE_SUCCESS, BUS_DELETE_FAIL, BUS_DELETE_REQUEST, BUS_DELETE_SUCCESS, BUS_GET_FAIL, BUS_GET_REQUEST, BUS_GET_SUCCESS, BUS_LIST_FAIL, BUS_LIST_REQUEST, BUS_LIST_SUCCESS, BUS_UPDATE_FAIL, BUS_UPDATE_REQUEST, BUS_UPDATE_SUCCESS } from "../constants/busConstants";
+import {
+  BUS_CREATE_FAIL,
+  BUS_CREATE_REQUEST,
+  BUS_CREATE_SUCCESS,
+  BUS_DELETE_FAIL,
+  BUS_DELETE_REQUEST,
+  BUS_DELETE_SUCCESS,
+  BUS_GET_FAIL,
+  BUS_GET_REQUEST,
+  BUS_GET_SUCCESS,
+  BUS_LIST_FAIL,
+  BUS_LIST_REQUEST,
+  BUS_LIST_SUCCESS,
+  BUS_UPDATE_FAIL,
+  BUS_UPDATE_REQUEST,
+  BUS_UPDATE_SUCCESS,
+  SAVE_DETAILS,
+} from "../constants/busConstants";
 
 export const createBus = (bus) => async (dispatch, getState) => {
   try {
@@ -120,11 +137,7 @@ export const updateBus = (bus) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.put(
-      `${url}/buses/${bus._id}`,
-      bus,
-      config
-    );
+    const { data } = await axios.put(`${url}/buses/${bus._id}`, bus, config);
     dispatch({
       type: BUS_UPDATE_SUCCESS,
       payload: data,
@@ -174,4 +187,11 @@ export const deleteBus = (id) => async (dispatch, getState) => {
       payload: message,
     });
   }
+};
+
+export const detailsSave = (details) => async (dispatch) => {
+  dispatch({
+    type: SAVE_DETAILS,
+    payload: details,
+  });
 };

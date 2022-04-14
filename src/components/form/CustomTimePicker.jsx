@@ -11,7 +11,6 @@ export default function CustomTimePicker({ label }) {
   const { setFieldTouched, errors, touched, setFieldValue, values } =
     useFormikContext();
 
-  console.log(values[label]);
 
   return (
     <FormControl fullWidth>
@@ -20,9 +19,7 @@ export default function CustomTimePicker({ label }) {
           <TimePicker
             label={label}
             value={values[label]}
-            onChange={(newValue) => {
-              setFieldValue(label, newValue);
-            }}
+            onChange={(e) => setFieldValue(label, e)}
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>

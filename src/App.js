@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ListBuses from "./screens/bus/ListBuses";
 import CreateBus from "./screens/bus/CreateBus";
 import EditBus from "./screens/bus/EditBus";
+import SelectBus from "./screens/bus/SelectBus";
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
               <Route path="/buses" element={<ListBuses />} />
               <Route path="/createBus" element={<CreateBus />} />
               <Route path="/buses/:id" element={<EditBus />} />
+              <Route path="/buses/booking" element={<SelectBus />} />
             </Routes>
           </Router>
         </Grid>

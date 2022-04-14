@@ -89,18 +89,46 @@ const NavBar = () => {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography variant="subtitle1">Home</Typography>
+                <Typography
+                  onClick={() => {
+                    navigate("/home");
+                  }}
+                  variant="subtitle1"
+                >
+                  Home
+                </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography variant="subtitle1">About</Typography>
+                <Typography
+                  onClick={() => {
+                    navigate("/about");
+                  }}
+                  variant="subtitle1"
+                >
+                  About
+                </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography variant="subtitle1">My bookings</Typography>
+                <Typography
+                  onClick={() => {
+                    navigate("/mybookings");
+                  }}
+                  variant="subtitle1"
+                >
+                  My bookings
+                </Typography>
               </MenuItem>
               {userInfo && userInfo.isAdmin && (
                 <>
                   <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography variant="subtitle1">All bookings</Typography>
+                    <Typography
+                      onClick={() => {
+                        navigate("/bookings");
+                      }}
+                      variant="subtitle1"
+                    >
+                      All bookings
+                    </Typography>
                   </MenuItem>
                   <MenuItem
                     onClick={() => {
@@ -124,6 +152,9 @@ const NavBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
+              onClick={() => {
+                navigate("/home");
+              }}
               sx={{
                 color: palette.primary.contrastText,
               }}
@@ -131,6 +162,9 @@ const NavBar = () => {
               Home
             </Button>
             <Button
+              onClick={() => {
+                navigate("/mybookings");
+              }}
               sx={{
                 color: palette.primary.contrastText,
               }}
@@ -138,6 +172,9 @@ const NavBar = () => {
               My Bookings
             </Button>
             <Button
+              onClick={() => {
+                navigate("/about");
+              }}
               sx={{
                 color: palette.primary.contrastText,
               }}
@@ -147,6 +184,9 @@ const NavBar = () => {
             {userInfo && userInfo.isAdmin && (
               <>
                 <Button
+                  onClick={() => {
+                    navigate("/bookings");
+                  }}
                   sx={{
                     color: palette.primary.contrastText,
                   }}
@@ -157,7 +197,6 @@ const NavBar = () => {
                   onClick={() => {
                     navigate("/buses");
                   }}
-                  
                   sx={{
                     color: palette.primary.contrastText,
                   }}

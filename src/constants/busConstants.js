@@ -20,3 +20,5 @@ export const BUS_LIST_FAIL = "BUS_LIST_FAIL";
 export const BUS_GET_REQUEST = "BUS_GET_REQUEST";
 export const BUS_GET_SUCCESS = "BUS_GET_SUCCESS";
 export const BUS_GET_FAIL = "BUS_GET_FAIL";
+
+export const SAVE_DETAILS = "SAVE_DETAILS";

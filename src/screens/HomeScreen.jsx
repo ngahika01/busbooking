@@ -7,25 +7,54 @@ import Form from "../components/form/Form";
 import InputComponent from "../components/form/InputComponent";
 import NavBar from "../components/NavBar";
 import { CompareArrows } from "@mui/icons-material";
-import { CustomSelectComponent } from "../components/form/CustomSelectComponent";
+import CustomSelectComponent from "../components/form/CustomSelectComponent";
 import { destinations } from "../config/data";
 import CustomTimePicker from "../components/form/CustomTimePicker";
 import CustomDatePicker from "../components/form/CustomDatePicker";
 import SubmitButton from "../components/form/SubmitComponent";
+import { useNavigate } from "react-router-dom";
+import moment from "moment";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { detailsSave } from "../actions/busActions";
 
 const validationSchema = Yup.object().shape({
   origin: Yup.string().required("Origin is required"),
   destination: Yup.string().required("Destination is required"),
   departureDate: Yup.string().required("Departure Date is required"),
   departureTime: Yup.string().required("Departure Time is required"),
-  seatBooked: Yup.array().required("Seat Booked is required"),
-  price: Yup.string().required("Price is required"),
-  bus: Yup.string().required("Bus is required"),
 });
 const HomeScreen = () => {
-  const handleSubmit = (values) => {
-    console.log(values);
+  const [st, setSt] = React.useState(null);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = ({
+    origin,
+    destination,
+    departureDate,
+    departureTime,
+  }) => {
+    if (origin === destination) {
+      toast("Destination and origin must be different!", {
+        type: "error",
+      });
+      return;
+    }
+    dispatch(
+      detailsSave({
+        origin,
+        destination,
+        departureDate,
+        departureTime,
+      })
+    );
+
+    navigate("/buses/booking");
   };
+  const today = moment().format("MM/DD/YYYY");
+  // time
 
   return (
     <>
@@ -55,9 +84,9 @@ const HomeScreen = () => {
             initialValues={{
               origin: "",
               destination: "",
-              departureDate: "",
+              departureDate: today,
               departureTime: "",
-              price: 1500,
+              price: 2500,
             }}
           >
             <Grid item xs={12}>
