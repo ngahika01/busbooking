@@ -19,12 +19,17 @@ import CustomSelectComponent from "../../components/form/CustomSelectComponent";
 import Form from "../../components/form/Form";
 import NavBar from "../../components/NavBar";
 import * as Yup from "yup";
-import { getBus, listBuses } from "../../actions/busActions";
+import {
+  getBus,
+  listBuses,
+  updateSeatToBooked,
+} from "../../actions/busActions";
 import { useFormikContext } from "formik";
 import { useTheme } from "@emotion/react";
 import moment from "moment";
 import { createBooking } from "../../actions/bookingActions";
 import { toast } from "react-toastify";
+import { BOOKING_CREATE_RESET } from "../../constants/bookingConstants";
 
 const validationSchema = Yup.object().shape({
   bus: Yup.string().required("Bus is required"),
@@ -35,7 +40,7 @@ const SelectBus = () => {
 
   const [seat, setSeat] = React.useState([]);
 
-  console.log([seat],"ff");
+  console.log([seat], "ff");
 
   console.log(selected);
   const [id, setId] = React.useState("");
@@ -60,6 +65,10 @@ const SelectBus = () => {
     error: errorCreate,
     success,
   } = bookingCreate;
+  const seatToBooked = useSelector((state) => state.seatToBooked);
+  const { loading: loadingUpdate, error: errorUpdate, bus: b } = seatToBooked;
+
+  console.table(b);
 
   React.useEffect(() => {
     if (!userInfo) {
@@ -72,10 +81,13 @@ const SelectBus = () => {
       dispatch(getBus(id));
     }
     if (success) {
-      navigate("/booking/pay");
+       navigate("/booking/pay");
       toast.success("Booking created successfully");
+      dispatch({
+        type: BOOKING_CREATE_RESET,
+      });
     }
-  }, [userInfo, navigate, dispatch, id, success]);
+  }, [userInfo, navigate, id, success, seat, dispatch]);
 
   const handleSubmit = (values) => {};
   const { palette } = useTheme();
@@ -84,6 +96,12 @@ const SelectBus = () => {
   const { details } = saveDetails;
 
   const handleBooking = () => {
+    dispatch(
+      updateSeatToBooked(bus._id, {
+        seatNumber: seat,
+      })
+    );
+
     dispatch(
       createBooking({
         origin: details.origin,
@@ -98,8 +116,6 @@ const SelectBus = () => {
         price: 1500,
         bus: bus._id,
       })
-      //update bus seat to not available
-      
     );
   };
 

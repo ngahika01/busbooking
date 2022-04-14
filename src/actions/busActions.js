@@ -199,7 +199,7 @@ export const detailsSave = (details) => async (dispatch) => {
   });
 };
 
-export const updateSeatToPaid =
+export const updateSeatToBooked =
   (id, seatNumber) => async (dispatch, getState) => {
     try {
       dispatch({
@@ -213,9 +213,15 @@ export const updateSeatToPaid =
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      await axios.put(`${url}/buses/${id}`, seatNumber, config);
+      const { data } = await axios.put(
+        `${url}/buses/updateseat/${id}`,
+        seatNumber,
+        config
+      );
+
       dispatch({
         type: UPDATE_SEAT_TO_BOOKED_SUCCESS,
+        payload: data,
       });
     } catch (error) {
       const message =

@@ -34,7 +34,7 @@ const reducer = combineReducers({
   bookingUpdate: bookingUpdateReducer,
   bookingList: bookingListReducer,
   bookigngGet: bookingGetReducer,
-  updateSeatToBooked: updateSeatToBookedReducer,
+seatToBooked: updateSeatToBookedReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
