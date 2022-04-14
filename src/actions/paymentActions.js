@@ -2,28 +2,26 @@ import axios from "axios";
 import { url } from "../config/url";
 import { logout } from "./userActions";
 import {
-  BOOKING_CREATE_FAIL,
-  BOOKING_CREATE_REQUEST,
-  BOOKING_CREATE_SUCCESS,
-  BOOKING_DELETE_FAIL,
-  BOOKING_DELETE_REQUEST,
-  BOOKING_DELETE_SUCCESS,
-  BOOKING_GET_FAIL,
-  BOOKING_GET_REQUEST,
-  BOOKING_GET_SUCCESS,
-  BOOKING_LIST_FAIL,
-  BOOKING_LIST_REQUEST,
-  BOOKING_LIST_SUCCESS,
-  BOOKING_UPDATE_FAIL,
-  BOOKING_UPDATE_REQUEST,
-  BOOKING_UPDATE_SUCCESS,
-  SAVE_BOOKING,
-  SAVE_DETAILS,
-} from "../constants/bookingConstants";
+  PAYMENT_CREATE_FAIL,
+  PAYMENT_CREATE_REQUEST,
+  PAYMENT_CREATE_SUCCESS,
+  PAYMENT_DELETE_FAIL,
+  PAYMENT_DELETE_REQUEST,
+  PAYMENT_DELETE_SUCCESS,
+  PAYMENT_GET_FAIL,
+  PAYMENT_GET_REQUEST,
+  PAYMENT_GET_SUCCESS,
+  PAYMENT_LIST_FAIL,
+  PAYMENT_LIST_REQUEST,
+  PAYMENT_LIST_SUCCESS,
+  PAYMENT_UPDATE_FAIL,
+  PAYMENT_UPDATE_REQUEST,
+  PAYMENT_UPDATE_SUCCESS,
+} from "../constants/paymentConstants";
 
-export const createBooking = (booking) => async (dispatch, getState) => {
+export const createPayment = (booking) => async (dispatch, getState) => {
   try {
-    dispatch({ type: BOOKING_CREATE_REQUEST });
+    dispatch({ type: PAYMENT_CREATE_REQUEST });
     const {
       userLogin: { userInfo },
     } = getState();
@@ -32,14 +30,14 @@ export const createBooking = (booking) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.post(`${url}/bookings`, booking, config);
+    const { data } = await axios.post(`${url}/payments`, booking, config);
     dispatch({
-      type: BOOKING_CREATE_SUCCESS,
+      type: PAYMENT_CREATE_SUCCESS,
       payload: data,
     });
   } catch (error) {
     dispatch({
-      type: BOOKING_CREATE_FAIL,
+      type: PAYMENT_CREATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
@@ -48,10 +46,10 @@ export const createBooking = (booking) => async (dispatch, getState) => {
   }
 };
 
-export const listBookings = () => async (dispatch, getState) => {
+export const listpayments = () => async (dispatch, getState) => {
   try {
     dispatch({
-      type: BOOKING_LIST_REQUEST,
+      type: PAYMENT_LIST_REQUEST,
     });
 
     const {
@@ -64,10 +62,10 @@ export const listBookings = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`${url}/bookings`, config);
+    const { data } = await axios.get(`${url}/payments`, config);
 
     dispatch({
-      type: BOOKING_LIST_SUCCESS,
+      type: PAYMENT_LIST_SUCCESS,
       payload: data,
     });
   } catch (error) {
@@ -81,16 +79,16 @@ export const listBookings = () => async (dispatch, getState) => {
     console.log(message);
 
     dispatch({
-      type: BOOKING_LIST_FAIL,
+      type: PAYMENT_LIST_FAIL,
       payload: message,
     });
   }
 };
 
-export const getBooking = (id) => async (dispatch, getState) => {
+export const getPayment = (id) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: BOOKING_GET_REQUEST,
+      type: PAYMENT_GET_REQUEST,
     });
 
     const {
@@ -103,10 +101,10 @@ export const getBooking = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`${url}/bookings/${id}`, config);
+    const { data } = await axios.get(`${url}/payments/${id}`, config);
 
     dispatch({
-      type: BOOKING_GET_SUCCESS,
+      type: PAYMENT_GET_SUCCESS,
       payload: data,
     });
   } catch (error) {
@@ -120,15 +118,15 @@ export const getBooking = (id) => async (dispatch, getState) => {
     console.log(message);
 
     dispatch({
-      type: BOOKING_GET_FAIL,
+      type: PAYMENT_GET_FAIL,
       payload: message,
     });
   }
 };
 
-export const updateBooking = (booking) => async (dispatch, getState) => {
+export const updatePayment = (payment) => async (dispatch, getState) => {
   try {
-    dispatch({ type: BOOKING_UPDATE_REQUEST });
+    dispatch({ type: PAYMENT_UPDATE_REQUEST });
     const {
       userLogin: { userInfo },
     } = getState();
@@ -139,12 +137,12 @@ export const updateBooking = (booking) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.put(
-      `${url}/bookings/${booking._id}`,
-      booking,
+      `${url}/payments/${payment._id}`,
+      payment,
       config
     );
     dispatch({
-      type: BOOKING_UPDATE_SUCCESS,
+      type: PAYMENT_UPDATE_SUCCESS,
       payload: data,
     });
   } catch (error) {
@@ -156,16 +154,16 @@ export const updateBooking = (booking) => async (dispatch, getState) => {
       dispatch(logout());
     }
     dispatch({
-      type: BOOKING_UPDATE_FAIL,
+      type: PAYMENT_UPDATE_FAIL,
       payload: message,
     });
   }
 };
 
-export const deleteBooking = (id) => async (dispatch, getState) => {
+export const deletePayment = (id) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: BOOKING_DELETE_REQUEST,
+      type: PAYMENT_DELETE_REQUEST,
     });
     const {
       userLogin: { userInfo },
@@ -175,9 +173,9 @@ export const deleteBooking = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    await axios.delete(`${url}/bookings/${id}`, config);
+    await axios.delete(`${url}/payments/${id}`, config);
     dispatch({
-      type: BOOKING_DELETE_SUCCESS,
+      type: PAYMENT_DELETE_SUCCESS,
     });
   } catch (error) {
     const message =
@@ -188,15 +186,8 @@ export const deleteBooking = (id) => async (dispatch, getState) => {
       dispatch(logout());
     }
     dispatch({
-      type: BOOKING_DELETE_FAIL,
+      type: PAYMENT_DELETE_FAIL,
       payload: message,
     });
   }
-};
-
-export const saveBooking = (booking) => async (dispatch, getState) => {
-  dispatch({
-    type: SAVE_BOOKING,
-    payload: booking,
-  });
 };

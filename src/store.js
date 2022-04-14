@@ -18,7 +18,15 @@ import {
   bookingUpdateReducer,
   bookingGetReducer,
   bookingListReducer,
+  bookingSaveReducer,
 } from "./reducers/bookingReducers";
+import {
+  paymentCreateReducer,
+  paymentDeleteReducer,
+  paymentGetReducer,
+  paymentListReducer,
+  paymentUpdateReducer,
+} from "./reducers/paymentReducers";
 
 const reducer = combineReducers({
   userRegister: userRegisterReducer,
@@ -34,7 +42,13 @@ const reducer = combineReducers({
   bookingUpdate: bookingUpdateReducer,
   bookingList: bookingListReducer,
   bookigngGet: bookingGetReducer,
-seatToBooked: updateSeatToBookedReducer,
+  seatToBooked: updateSeatToBookedReducer,
+  bookingSave: bookingSaveReducer,
+  paymentCreate: paymentCreateReducer,
+  paymentList: paymentListReducer,
+  paymentGet: paymentGetReducer,
+  paymentDelete: paymentDeleteReducer,
+  paymentUpdate: paymentUpdateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

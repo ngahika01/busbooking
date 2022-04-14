@@ -17,6 +17,7 @@ import {
   BOOKING_DELETE_SUCCESS,
   BOOKING_DELETE_FAIL,
   BOOKING_DELETE_RESET,
+  SAVE_BOOKING,
 } from "../constants/bookingConstants";
 
 export const bookingCreateReducer = (state = {}, action) => {
@@ -107,5 +108,14 @@ export const bookingDeleteReducer = (state = {}, action) => {
       return state;
     case BOOKING_DELETE_RESET:
       return {};
+  }
+};
+
+export const bookingSaveReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SAVE_BOOKING:
+      return { ...state, booking: action.payload };
+    default:
+      return state;
   }
 };

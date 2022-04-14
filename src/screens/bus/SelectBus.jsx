@@ -27,7 +27,7 @@ import {
 import { useFormikContext } from "formik";
 import { useTheme } from "@emotion/react";
 import moment from "moment";
-import { createBooking } from "../../actions/bookingActions";
+import { createBooking, saveBooking } from "../../actions/bookingActions";
 import { toast } from "react-toastify";
 import { BOOKING_CREATE_RESET } from "../../constants/bookingConstants";
 
@@ -68,8 +68,6 @@ const SelectBus = () => {
   const seatToBooked = useSelector((state) => state.seatToBooked);
   const { loading: loadingUpdate, error: errorUpdate, bus: b } = seatToBooked;
 
-  console.table(b);
-
   React.useEffect(() => {
     if (!userInfo) {
       navigate("/", {
@@ -81,13 +79,16 @@ const SelectBus = () => {
       dispatch(getBus(id));
     }
     if (success) {
-       navigate("/booking/pay");
+      dispatch(saveBooking(booking));
       toast.success("Booking created successfully");
       dispatch({
         type: BOOKING_CREATE_RESET,
       });
+      navigate("/booking/pay", {
+        replace: true,
+      });
     }
-  }, [userInfo, navigate, id, success, seat, dispatch]);
+  }, [userInfo, navigate, id, success, seat, dispatch, booking]);
 
   const handleSubmit = (values) => {};
   const { palette } = useTheme();
@@ -101,6 +102,11 @@ const SelectBus = () => {
         seatNumber: seat,
       })
     );
+    // dispatch(saveBooking(
+    //   {
+
+    //   }
+    // ))
 
     dispatch(
       createBooking({
