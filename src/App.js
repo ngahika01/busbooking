@@ -16,6 +16,7 @@ import EditBus from "./screens/bus/EditBus";
 import SelectBus from "./screens/bus/SelectBus";
 import PaymentsScreen from "./screens/payment/PaymentsScreen";
 import MyBookings from "./screens/bookings/MyBookings";
+import BookingsScreen from "./screens/bookings/BookingsScreen";
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
               <Route path="/buses/booking" element={<SelectBus />} />
               <Route path="/booking/pay" element={<PaymentsScreen />} />
               <Route path="/mybookings" element={<MyBookings />} />
+              <Route path="/bookings" element={<BookingsScreen />} />
             </Routes>
           </Router>
         </Grid>

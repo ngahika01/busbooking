@@ -16,9 +16,13 @@ import { deleteBus, listBuses } from "../../actions/busActions";
 import DataGridComponent from "../../components/DataGridComponent";
 import NavBar from "../../components/NavBar";
 import moment from "moment";
-import { deleteBooking, listBookings } from "../../actions/bookingActions";
+import {
+  deleteBooking,
+  listAllBookings,
+  listBookings,
+} from "../../actions/bookingActions";
 
-export default function MyBookings() {
+export default function BookingsScreen() {
   const { palette } = useTheme();
   const columns = [
     {
@@ -177,14 +181,14 @@ export default function MyBookings() {
     }
   };
 
-  const bookingList = useSelector((state) => state.bookingList);
-  const { loading, error, bookings } = bookingList;
+  const bookingAll = useSelector((state) => state.bookingAll);
+  const { loading, error, bookings } = bookingAll;
 
   const bookingDelete = useSelector((state) => state.bookingDelete);
   const { loading: loadingDel, error: errrDelete, success } = bookingDelete;
 
   React.useEffect(() => {
-    dispatch(listBookings());
+    dispatch(listAllBookings());
   }, [dispatch]);
 
   return (
@@ -203,7 +207,7 @@ export default function MyBookings() {
           component="div"
           style={{ textAlign: "center" }}
         >
-          My Bookings List
+          All Bookings List
         </Typography>
         <Grid container spacing={5}>
           <Grid item xs={12}>
@@ -227,9 +231,7 @@ export default function MyBookings() {
                 ))}
               {bookings && (
                 <DataGridComponent
-                  onClick={() => navigate("/home")}
                   title="Booking List"
-                  buttonTitle={`Create New Booking`}
                   rows={bookings}
                   columns={columns}
                 />

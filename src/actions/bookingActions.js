@@ -2,6 +2,9 @@ import axios from "axios";
 import { url } from "../config/url";
 import { logout } from "./userActions";
 import {
+  BOOKING_ALL_FAIL,
+  BOOKING_ALL_REQUEST,
+  BOOKING_ALL_SUCCESS,
   BOOKING_CREATE_FAIL,
   BOOKING_CREATE_REQUEST,
   BOOKING_CREATE_SUCCESS,
@@ -199,4 +202,43 @@ export const saveBooking = (booking) => async (dispatch, getState) => {
     type: SAVE_BOOKING,
     payload: booking,
   });
+};
+
+export const listAllBookings = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: BOOKING_ALL_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`${url}/bookings/all`, config);
+
+    dispatch({
+      type: BOOKING_ALL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    console.log(message);
+
+    dispatch({
+      type: BOOKING_ALL_FAIL,
+      payload: message,
+    });
+  }
 };
