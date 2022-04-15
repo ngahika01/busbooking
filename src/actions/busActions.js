@@ -254,7 +254,7 @@ export const resetBus = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.put(`${url}/buses/reset/${id}`, config);
+    const { data } = await axios.put(`${url}/buses/reset/${id}`,{}, config);
 
     dispatch({
       type: BUS_RESET_SUCCESS,

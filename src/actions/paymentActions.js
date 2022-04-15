@@ -20,6 +20,7 @@ import {
   PAYMENT_UPDATE_TO_CANCELLED_FAIL,
   PAYMENT_UPDATE_TO_CANCELLED_REQUEST,
   PAYMENT_UPDATE_TO_CANCELLED_SUCCESS,
+  PAYMENT_UPDATE_TO_PAID_FAIL,
   PAYMENT_UPDATE_TO_PAID_REQUEST,
   PAYMENT_UPDATE_TO_PAID_SUCCESS,
 } from "../constants/paymentConstants";
@@ -229,7 +230,7 @@ export const updateToPiad = (id) => async (dispatch, getState) => {
       dispatch(logout());
     }
     dispatch({
-      type: PAYMENT_UPDATE_TO_CANCELLED_FAIL,
+      type: PAYMENT_UPDATE_TO_PAID_FAIL,
       payload: message,
     });
   }

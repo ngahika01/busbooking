@@ -80,7 +80,7 @@ export const paymentGetReducer = (state = {}, action) => {
     case PAYMENT_GET_REQUEST:
       return { loading: true, ...state };
     case PAYMENT_GET_SUCCESS:
-      return { loading: false, bus: action.payload, success: true };
+      return { loading: false, payment: action.payload, success: true };
     case PAYMENT_GET_FAIL:
       return { loading: false, error: action.payload };
     default:

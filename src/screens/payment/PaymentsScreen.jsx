@@ -3,9 +3,12 @@ import {
   Badge,
   Box,
   Button,
+  Card,
   CircularProgress,
   Container,
+  Divider,
   Grid,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -27,6 +30,9 @@ import {
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { Title } from "@mui/icons-material";
+import { useTheme } from "@emotion/react";
+import { replace } from "formik";
 const socket = io("http://localhost:5000");
 
 const PaymentsScreen = () => {
@@ -54,6 +60,8 @@ const PaymentsScreen = () => {
     setPy(data);
   });
 
+  const { palette } = useTheme();
+
   const paymentUpdateToPaid = useSelector((state) => state.paymentUpdateToPaid);
   const { loading, success } = paymentUpdateToPaid;
 
@@ -72,10 +80,22 @@ const PaymentsScreen = () => {
       navigate("/home", {
         replace: true,
       });
+      if (feedback === "The initiator information is invalid.") {
+        toast.error("The initiator information is invalid.");
+        navigate("/home", {
+          replace: true,
+        });
+      }
     } else if (feedback === "The service request is processed successfully.") {
       dispatch(updateToPiad(id));
       dispatch(getPayment(id));
       setFeedback(null);
+      navigate("/reciept", {
+        state: {
+          id: id,
+        },
+        replace: true,
+      });
     }
   }, [feedback, navigate, dispatch, id]);
 
@@ -137,7 +157,7 @@ const PaymentsScreen = () => {
                 }}
               />
               <Typography variant="h6" component="h2">
-                Amount: {bk.price}
+                Amount: {bk?.price}
               </Typography>
             </div>
             <Button
@@ -148,58 +168,6 @@ const PaymentsScreen = () => {
             >
               Pay via mpesa
             </Button>
-          </Grid>
-          <Grid item xs={12}>
-            {p && (
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>ID</TableCell>
-                      <TableCell>Amount</TableCell>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Booking Date</TableCell>
-                      <TableCell>Booking Time</TableCell>
-                      <TableCell>Bus</TableCell>
-                      <TableCell>Paid</TableCell>
-                      <TableCell>Cancelled</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>{p.id}</TableCell>
-                      <TableCell>{p.amount}</TableCell>
-                      <TableCell>{p.user && p.user.name}</TableCell>
-                      <TableCell>
-                        {p.booking &&
-                          moment(p.booking.departureDate).format(
-                            "MMMM Do YYYY"
-                          )}
-                      </TableCell>
-                      <TableCell>
-                        {p.booking &&
-                          moment(p.booking.departureTime).format("h:mm a")}
-                      </TableCell>
-                      <TableCell>{p.booking && p.booking.bus}</TableCell>
-                      <TableCell>
-                        {p.paid ? (
-                          <Badge color="primary">Paid via mpesa</Badge>
-                        ) : (
-                          <Badge color="secondary">Not paid</Badge>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {p.cancelled ? (
-                          <Badge color="secondary">Cancelled</Badge>
-                        ) : (
-                          <Badge color="primary">Not cancelled</Badge>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
           </Grid>
         </Grid>
       </Box>

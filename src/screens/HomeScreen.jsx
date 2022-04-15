@@ -85,7 +85,7 @@ const HomeScreen = () => {
               destination: "",
               departureDate: today,
               departureTime: "",
-              price: 2500,
+              price: 1500,
             }}
           >
             <Grid item xs={12}>

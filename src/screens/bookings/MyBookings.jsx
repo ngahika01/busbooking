@@ -221,7 +221,7 @@ export default function MyBookings() {
               }}
             >
               {loading ||
-                (loadingDel && (
+                loadingDel && (
                   <Backdrop
                     sx={{
                       color: "#fff",
@@ -231,7 +231,7 @@ export default function MyBookings() {
                   >
                     <CircularProgress color="inherit" />
                   </Backdrop>
-                ))}
+                )}
               {bookings && (
                 <DataGridComponent
                   onClick={() => navigate("/home")}

@@ -18,6 +18,7 @@ import PaymentsScreen from "./screens/payment/PaymentsScreen";
 import MyBookings from "./screens/bookings/MyBookings";
 import BookingsScreen from "./screens/bookings/BookingsScreen";
 import AboutScreen from "./screens/AboutScreen";
+import PaymentList from "./screens/payment/PaymentList";
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
               <Route path="/mybookings" element={<MyBookings />} />
               <Route path="/bookings" element={<BookingsScreen />} />
               <Route path="/about" element={<AboutScreen />} />
+              <Route path="/reciept" element={<PaymentList />} />
             </Routes>
           </Router>
         </Grid>
