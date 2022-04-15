@@ -22,6 +22,7 @@ import {
   createPayment,
   getPayment,
   updatePayment,
+  updateToPiad,
 } from "../../actions/paymentActions";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -35,6 +36,7 @@ const PaymentsScreen = () => {
   const [feedback, setFeedback] = React.useState(null);
   const [id, setId] = React.useState(null);
   const [disabled, setDisabled] = React.useState(false);
+  const [py, setPy] = React.useState(null);
 
   socket.on("querying", (data) => {
     setLd(true);
@@ -48,7 +50,9 @@ const PaymentsScreen = () => {
       setFeedback(data);
     }
   });
-  console.log(feedback);
+  socket.on("payment", (data) => {
+    setPy(data);
+  });
 
   const paymentUpdateToPaid = useSelector((state) => state.paymentUpdateToPaid);
   const { loading, success } = paymentUpdateToPaid;
@@ -69,10 +73,13 @@ const PaymentsScreen = () => {
         replace: true,
       });
     } else if (feedback === "The service request is processed successfully.") {
-      dispatch(updatePayment(id));
+      dispatch(updateToPiad(id));
       dispatch(getPayment(id));
+      setFeedback(null);
     }
   }, [feedback, navigate, dispatch, id]);
+
+  console.table(py);
 
   console.table(feedback);
   const handlePay = (e) => {
@@ -132,16 +139,15 @@ const PaymentsScreen = () => {
               <Typography variant="h6" component="h2">
                 Amount: {bk.price}
               </Typography>
-
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={disabled}
-                onClick={(e) => handlePay(e)}
-              >
-                Pay via mpesa
-              </Button>
             </div>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={disabled}
+              onClick={(e) => handlePay(e)}
+            >
+              Pay via mpesa
+            </Button>
           </Grid>
           <Grid item xs={12}>
             {p && (

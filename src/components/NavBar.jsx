@@ -44,6 +44,7 @@ const NavBar = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     dispatch(logout());
+    navigate("/", { replace: true });
   };
 
   return (
@@ -57,7 +58,11 @@ const NavBar = () => {
               navigate("/home");
             }}
             component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" },cursor:"pointer" }}
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              cursor: "pointer",
+            }}
           >
             Bus Booking System
           </Typography>
@@ -238,7 +243,6 @@ const NavBar = () => {
                 onClick={() => {
                   handleCloseUserMenu();
                   handleLogout();
-                  navigate("/", { replace: true });
                   toast("Logged out successfully!");
                 }}
               >

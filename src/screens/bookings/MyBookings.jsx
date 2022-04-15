@@ -17,6 +17,7 @@ import DataGridComponent from "../../components/DataGridComponent";
 import NavBar from "../../components/NavBar";
 import moment from "moment";
 import { deleteBooking, listBookings } from "../../actions/bookingActions";
+import { BOOKING_DELETE_RESET } from "../../constants/bookingConstants";
 
 export default function MyBookings() {
   const { palette } = useTheme();
@@ -185,7 +186,13 @@ export default function MyBookings() {
 
   React.useEffect(() => {
     dispatch(listBookings());
-  }, [dispatch]);
+    if (success) {
+      toast.success("Booking deleted successfully");
+      dispatch({
+        type: BOOKING_DELETE_RESET,
+      });
+    }
+  }, [dispatch,success]);
 
   return (
     <>
@@ -203,7 +210,7 @@ export default function MyBookings() {
           component="div"
           style={{ textAlign: "center" }}
         >
-         My Bookings List
+          My Bookings List
         </Typography>
         <Grid container spacing={5}>
           <Grid item xs={12}>
