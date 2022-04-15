@@ -22,6 +22,9 @@ import {
   UPDATE_SEAT_TO_BOOKED_SUCCESS,
   UPDATE_SEAT_TO_BOOKED_FAIL,
   UPDATE_SEAT_TO_BOOKED_RESET,
+  BUS_RESET_REQUEST,
+  BUS_RESET_SUCCESS,
+  BUS_RESET_FAIL,
 } from "../constants/busConstants";
 
 export const busCreateReducer = (state = {}, action) => {
@@ -138,3 +141,16 @@ export const updateSeatToBookedReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const busResetReducer = (state = {}, action) => {
+  switch (action.type) {
+    case BUS_RESET_REQUEST:
+      return { loading: true };
+    case BUS_RESET_SUCCESS:
+      return { loading: false, success: true, bus: action.payload };
+      case BUS_RESET_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}

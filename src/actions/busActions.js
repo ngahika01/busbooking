@@ -14,6 +14,9 @@ import {
   BUS_LIST_FAIL,
   BUS_LIST_REQUEST,
   BUS_LIST_SUCCESS,
+  BUS_RESET_FAIL,
+  BUS_RESET_REQUEST,
+  BUS_RESET_SUCCESS,
   BUS_UPDATE_FAIL,
   BUS_UPDATE_REQUEST,
   BUS_UPDATE_SUCCESS,
@@ -237,3 +240,37 @@ export const updateSeatToBooked =
       });
     }
   };
+
+export const resetBus = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: BUS_RESET_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put(`${url}/buses/reset/${id}`, config);
+
+    dispatch({
+      type: BUS_RESET_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: BUS_RESET_FAIL,
+      payload: message,
+    });
+  }
+};
