@@ -203,7 +203,7 @@ export default function MyBookings() {
           component="div"
           style={{ textAlign: "center" }}
         >
-         My Bookings List
+          My Bookings List
         </Typography>
         <Grid container spacing={5}>
           <Grid item xs={12}>
