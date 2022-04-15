@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Paper, TableContainer, Typography } from "@mui/material";
 import {
   DataGrid,
   GridToolbarContainer,
@@ -33,18 +33,20 @@ const DataGridComponent = ({ title, buttonTitle, columns, rows, onClick }) => {
             {buttonTitle}
           </Button>
           {
-            <DataGrid
-              style={{ height: "100vh" }}
-              rows={rows}
-              columns={columns}
-              pageSize={7}
-              getRowId={(row) => row._id}
-              disableSelectionOnClick
-              components={{
-                Toolbar: GridToolbar,
-              }}
-            />
-          }{" "}
+            <TableContainer component={Paper}>
+              <DataGrid
+                style={{ height: "100vh" }}
+                rows={rows}
+                columns={columns}
+                pageSize={7}
+                getRowId={(row) => row._id}
+                disableSelectionOnClick
+                components={{
+                  Toolbar: GridToolbar,
+                }}
+              />
+            </TableContainer>
+          }
         </Box>
       </>
     </>

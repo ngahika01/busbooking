@@ -53,8 +53,11 @@ const NavBar = () => {
           <Typography
             variant="h6"
             noWrap
+            onClick={() => {
+              navigate("/home");
+            }}
             component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            sx={{ mr: 2, display: { xs: "none", md: "flex" },cursor:"pointer" }}
           >
             Bus Booking System
           </Typography>

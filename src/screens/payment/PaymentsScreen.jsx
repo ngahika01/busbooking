@@ -1,19 +1,31 @@
 import {
   Backdrop,
+  Badge,
   Box,
   Button,
   CircularProgress,
   Container,
   Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
 } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NavBar from "../../components/NavBar";
 import { io } from "socket.io-client";
-import { createPayment, updatePayment } from "../../actions/paymentActions";
+import {
+  createPayment,
+  getPayment,
+  updatePayment,
+} from "../../actions/paymentActions";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 const socket = io("http://localhost:5000");
 
 const PaymentsScreen = () => {
@@ -21,28 +33,32 @@ const PaymentsScreen = () => {
   const { userInfo } = userLogin;
   const [ld, setLd] = React.useState(false);
   const [feedback, setFeedback] = React.useState(null);
-  const[id,setId] = React.useState(null)
+  const [id, setId] = React.useState(null);
+  const [disabled, setDisabled] = React.useState(false);
 
   socket.on("querying", (data) => {
     setLd(true);
     setId(data.CheckoutRequestID);
+    setDisabled(true);
   });
 
   socket.on("queried", (data) => {
     {
       setLd(false);
       setFeedback(data);
-
     }
   });
   console.log(feedback);
 
-  const paymentUpdateToPaid  = useSelector((state) => state.paymentUpdateToPaid);
+  const paymentUpdateToPaid = useSelector((state) => state.paymentUpdateToPaid);
   const { loading, success } = paymentUpdateToPaid;
 
   const bookingSave = useSelector((state) => state.bookingSave);
   const { booking: bk } = bookingSave;
   const dispatch = useDispatch();
+
+  const paymentGet = useSelector((state) => state.paymentGet);
+  const { payment: p } = paymentGet;
 
   const navigate = useNavigate();
   React.useEffect(() => {
@@ -52,18 +68,20 @@ const PaymentsScreen = () => {
       navigate("/home", {
         replace: true,
       });
+    } else if (feedback === "The service request is processed successfully.") {
+      dispatch(updatePayment(id));
+      dispatch(getPayment(id));
     }
-    if(feedback === "The service request is processed successfully"){
-      dispatch(updatePayment(id))
-    }
+  }, [feedback, navigate, dispatch, id]);
 
-  }, [feedback, navigate, dispatch,id]);
-
+  console.table(feedback);
   const handlePay = (e) => {
     e.preventDefault();
-    dispatch(createPayment({
-      booking: bk._id,
-    }));
+    dispatch(
+      createPayment({
+        booking: bk._id,
+      })
+    );
   };
 
   return (
@@ -118,11 +136,64 @@ const PaymentsScreen = () => {
               <Button
                 variant="contained"
                 color="primary"
+                disabled={disabled}
                 onClick={(e) => handlePay(e)}
               >
                 Pay via mpesa
               </Button>
             </div>
+          </Grid>
+          <Grid item xs={12}>
+            {p && (
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>ID</TableCell>
+                      <TableCell>Amount</TableCell>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Booking Date</TableCell>
+                      <TableCell>Booking Time</TableCell>
+                      <TableCell>Bus</TableCell>
+                      <TableCell>Paid</TableCell>
+                      <TableCell>Cancelled</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>{p.id}</TableCell>
+                      <TableCell>{p.amount}</TableCell>
+                      <TableCell>{p.user && p.user.name}</TableCell>
+                      <TableCell>
+                        {p.booking &&
+                          moment(p.booking.departureDate).format(
+                            "MMMM Do YYYY"
+                          )}
+                      </TableCell>
+                      <TableCell>
+                        {p.booking &&
+                          moment(p.booking.departureTime).format("h:mm a")}
+                      </TableCell>
+                      <TableCell>{p.booking && p.booking.bus}</TableCell>
+                      <TableCell>
+                        {p.paid ? (
+                          <Badge color="primary">Paid via mpesa</Badge>
+                        ) : (
+                          <Badge color="secondary">Not paid</Badge>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {p.cancelled ? (
+                          <Badge color="secondary">Cancelled</Badge>
+                        ) : (
+                          <Badge color="primary">Not cancelled</Badge>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
           </Grid>
         </Grid>
       </Box>

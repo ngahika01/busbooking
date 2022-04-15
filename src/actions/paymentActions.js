@@ -142,8 +142,8 @@ export const updatePayment = (payment) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.put(
-      `${url}/payments/${payment._id}`,
-      payment,
+      `${url}/payments/${payment}`,
+     {},
       config
     );
     dispatch({
