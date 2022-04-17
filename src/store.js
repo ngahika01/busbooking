@@ -47,7 +47,7 @@ const reducer = combineReducers({
   busDelete: busDeleteReducer,
   busUpdate: busUpdateReducer,
   busReset: busResetReducer,
-  busDeparture: busDepartureCreateReducer,
+  busDepartureCreate: busDepartureCreateReducer,
   busDepartureList: busDepartureListReducer,
   busDepartureDelete: busDepartureDeleteReducer,
   busDepartureAll: busDepartureAllReducer,

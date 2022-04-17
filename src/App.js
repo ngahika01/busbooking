@@ -20,6 +20,7 @@ import BookingsScreen from "./screens/bookings/BookingsScreen";
 import AboutScreen from "./screens/AboutScreen";
 import PaymentList from "./screens/payment/PaymentList";
 import DepartureList from "./screens/depart/DepartureList";
+import CreateDeparture from "./screens/depart/CreateDeparture";
 
 const App = () => {
   return (
@@ -38,7 +39,7 @@ const App = () => {
               <Route path="/buses" element={<ListBuses />} />
               <Route path="/createBus" element={<CreateBus />} />
               <Route path="/buses/departures" element={<DepartureList />} />
-              <Route path="/createDeparture" element={<DepartureList />} />
+              <Route path="/createDeparture" element={<CreateDeparture />} />
               <Route path="/buses/booking" element={<SelectBus />} />
               <Route path="/booking/pay" element={<PaymentsScreen />} />
               <Route path="/mybookings" element={<MyBookings />} />

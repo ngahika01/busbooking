@@ -27,6 +27,8 @@ import { deleteBus, listBuses, resetBus } from "../../actions/busActions";
 import DataGridComponent from "../../components/DataGridComponent";
 import NavBar from "../../components/NavBar";
 import { DataGrid } from "@mui/x-data-grid";
+import { listAllBusDepartures } from "../../actions/busDepartureActions";
+import moment from "moment";
 
 export default function DepartureList() {
   const { palette } = useTheme();
@@ -43,19 +45,43 @@ export default function DepartureList() {
       },
     },
     {
-      field: "name",
+      field: "bus",
       width: 200,
-      headerName: "NAME",
+      headerName: "Bus",
       renderCell: (params) => {
-        return <> {params.row.name} </>;
+        return <> {params.row.bus && params.row.bus.name} </>;
       },
     },
     {
-      field: "numberPlate",
-      headerName: "Number Plate",
+      field: "departureTime",
+      headerName: "Departure Time",
       width: 150,
       renderCell: (params) => {
-        return <> {params.row.numberPlate} </>;
+        return <> {moment(params.row.departureTime).format("h:mm a")} </>;
+      },
+    },
+    {
+      field: "departureDate",
+      headerName: "Departure Date",
+      width: 150,
+      renderCell: (params) => {
+        return <> {moment(params.row.departureDate).format("h:mm a")} </>;
+      },
+    },
+    {
+      field: "origin",
+      headerName: "Origin",
+      width: 150,
+      renderCell: (params) => {
+        return <> {params.row.origin} </>;
+      },
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      width: 150,
+      renderCell: (params) => {
+        return <> {params.row.price} </>;
       },
     },
 
@@ -84,7 +110,6 @@ export default function DepartureList() {
                 }}
               />
             </IconButton>
-           
           </>
         );
       },
@@ -101,11 +126,11 @@ export default function DepartureList() {
     }
   };
 
-  const busList = useSelector((state) => state.busList);
-  const { loading, error, buses } = busList;
+  const busDepartureAll = useSelector((state) => state.busDepartureAll);
+  const { loading, error, buses } = busDepartureAll;
 
   React.useEffect(() => {
-    dispatch(list());
+    dispatch(listAllBusDepartures());
   }, [dispatch]);
 
   const handleReset = (id) => {
@@ -153,9 +178,9 @@ export default function DepartureList() {
               )}
               {buses && (
                 <DataGridComponent
-                  onClick={() => navigate("/createBus")}
-                  title="Bus List"
-                  buttonTitle={`Create New Bus`}
+                  onClick={() => navigate("/createDeparture")}
+                  title="Bus Departure List"
+                  buttonTitle={`Create New Bus Departure`}
                   rows={buses}
                   columns={columns}
                 />
