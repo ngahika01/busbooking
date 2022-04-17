@@ -7,7 +7,7 @@ import InputComponent from "../components/form/InputComponent";
 import NavBar from "../components/NavBar";
 import { CompareArrows } from "@mui/icons-material";
 import CustomSelectComponent from "../components/form/CustomSelectComponent";
-import { destinations } from "../config/data";
+import { departureTimes, destinations } from "../config/data";
 import CustomTimePicker from "../components/form/CustomTimePicker";
 import CustomDatePicker from "../components/form/CustomDatePicker";
 import SubmitButton from "../components/form/SubmitComponent";
@@ -116,7 +116,7 @@ const HomeScreen = () => {
               <CustomDatePicker label={"departureDate"} />
             </Grid>
             <Grid item xs={12} md={6}>
-              <CustomTimePicker label={"departureTime"} />
+              <CustomSelectComponent name={`departureTime`} item={departureTimes} />
             </Grid>
             <Grid item xs={12}>
               <InputComponent label="price" disabled />

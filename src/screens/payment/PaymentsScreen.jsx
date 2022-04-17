@@ -60,6 +60,15 @@ const PaymentsScreen = () => {
     setPy(data);
   });
 
+  console.log(
+    socket.on("queried", (data) => {
+    {
+      setLd(false);
+      setFeedback(data);
+    }
+  })
+  )
+
   const { palette } = useTheme();
 
   const paymentUpdateToPaid = useSelector((state) => state.paymentUpdateToPaid);
@@ -86,20 +95,20 @@ const PaymentsScreen = () => {
           replace: true,
         });
       }
-    } else if (feedback === "The service request is processed successfully.") {
+    }
+
+    if (feedback === "The service request is processed successfully.") {
       dispatch(updateToPiad(id));
-      dispatch(getPayment(id));
-      setFeedback(null);
       navigate("/reciept", {
         state: {
           id: id,
         },
         replace: true,
       });
+      setFeedback(null);
     }
-  }, [feedback, navigate, dispatch, id]);
 
-  console.table(py);
+  }, [feedback, navigate, dispatch, id]);
 
   console.table(feedback);
   const handlePay = (e) => {
