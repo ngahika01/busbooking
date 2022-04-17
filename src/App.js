@@ -19,6 +19,7 @@ import MyBookings from "./screens/bookings/MyBookings";
 import BookingsScreen from "./screens/bookings/BookingsScreen";
 import AboutScreen from "./screens/AboutScreen";
 import PaymentList from "./screens/payment/PaymentList";
+import DepartureList from "./screens/depart/DepartureList";
 
 const App = () => {
   return (
@@ -36,13 +37,15 @@ const App = () => {
               <Route path="/home" element={<HomeScreen />} />
               <Route path="/buses" element={<ListBuses />} />
               <Route path="/createBus" element={<CreateBus />} />
-              <Route path="/buses/:id" element={<EditBus />} />
+              <Route path="/buses/departures" element={<DepartureList />} />
+              <Route path="/createDeparture" element={<DepartureList />} />
               <Route path="/buses/booking" element={<SelectBus />} />
               <Route path="/booking/pay" element={<PaymentsScreen />} />
               <Route path="/mybookings" element={<MyBookings />} />
               <Route path="/bookings" element={<BookingsScreen />} />
               <Route path="/about" element={<AboutScreen />} />
               <Route path="/reciept" element={<PaymentList />} />
+              <Route path="*" element={<LoginScreen />} />
             </Routes>
           </Router>
         </Grid>

@@ -27,7 +27,7 @@ export const createBusDeparture = (bus) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.post(`${url}/buses`, bus, config);
+    const { data } = await axios.post(`${url}/departures`, bus, config);
     dispatch({
       type: BUS_DEPARTURE_CREATE_SUCCESS,
       payload: data,
@@ -43,7 +43,7 @@ export const createBusDeparture = (bus) => async (dispatch, getState) => {
   }
 };
 
-export const listBusesdEPARTURE =
+export const listBusesDepatures =
   ({ departureDate, departureTime, origin }) =>
   async (dispatch, getState) => {
     try {
@@ -61,7 +61,7 @@ export const listBusesdEPARTURE =
         },
       };
 
-      const { data } = await axios.get(`${url}/buses?departureDate=${departureDate}&departureTime=${departureTime}&origin=${origin}`, config);
+      const { data } = await axios.get(`${url}/departures?departureDate=${departureDate}&departureTime=${departureTime}&origin=${origin}`, config);
       
       
 
@@ -98,7 +98,7 @@ export const updateBusDeparture = (bus) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.put(`${url}/buses/${bus._id}`, bus, config);
+    const { data } = await axios.put(`${url}/departures/${bus._id}`, bus, config);
     dispatch({
       type: BUS_DEPARTURE_UPDATE_SUCCESS,
       payload: data,
@@ -131,7 +131,7 @@ export const deleteBusDeparture = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    await axios.delete(`${url}/buses/${id}`, config);
+    await axios.delete(`${url}/departures/${id}`, config);
     dispatch({
       type: BUS_DEPARTURE_DELETE_SUCCESS,
     });

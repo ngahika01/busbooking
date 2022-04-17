@@ -48,7 +48,7 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar   position="static">
+    <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -138,6 +138,16 @@ const NavBar = () => {
                       All bookings
                     </Typography>
                   </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography
+                      onClick={() => {
+                        navigate("/buses/departures");
+                      }}
+                      variant="subtitle1"
+                    >
+                      Bus Departures Times
+                    </Typography>
+                  </MenuItem>
                   <MenuItem
                     onClick={() => {
                       navigate("/buses");
@@ -210,6 +220,16 @@ const NavBar = () => {
                   }}
                 >
                   Buses
+                </Button>
+                <Button
+                  onClick={() => {
+                    navigate("/buses/departures");
+                  }}
+                  sx={{
+                    color: palette.primary.contrastText,
+                  }}
+                >
+                  Buses Departures
                 </Button>
               </>
             )}
