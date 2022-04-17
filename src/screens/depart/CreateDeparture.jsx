@@ -32,6 +32,7 @@ import { departureTimes, destinations } from "../../config/data";
 import InputComponent from "../../components/form/InputComponent";
 import { createBusDeparture } from "../../actions/busDepartureActions";
 import CustomDatePicker from "../../components/form/CustomDatePicker";
+import { BUS_DEPARTURE_CREATE_RESET } from "../../constants/busDepartureConstants";
 
 const validationSchema = Yup.object().shape({
   bus: Yup.string().required("Bus is required"),
@@ -62,7 +63,7 @@ const CreateDeparture = () => {
       navigate("/", { replace: true });
     }
     if (success) {
-      dispatch({ type: BUS_CREATE_RESET });
+      dispatch({ type: BUS_DEPARTURE_CREATE_RESET });
       navigate("/buses/departures");
       toast("Bus departure created successfully", {
         type: "success",
@@ -145,7 +146,7 @@ const CreateDeparture = () => {
               <CustomSelectComponent name={`bus`} item={buses} />
             </Grid>
             <Grid item xs={12} md={6}>
-              <InputComponent label="price"  type={"number"} />
+              <InputComponent label="price" type={"number"} />
             </Grid>
             <Grid item xs={12} md={6}>
               <CustomDatePicker label={"departureDate"} />

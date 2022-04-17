@@ -27,7 +27,7 @@ import { deleteBus, listBuses, resetBus } from "../../actions/busActions";
 import DataGridComponent from "../../components/DataGridComponent";
 import NavBar from "../../components/NavBar";
 import { DataGrid } from "@mui/x-data-grid";
-import { listAllBusDepartures } from "../../actions/busDepartureActions";
+import { deleteBusDeparture, listAllBusDepartures } from "../../actions/busDepartureActions";
 import moment from "moment";
 
 export default function DepartureList() {
@@ -57,7 +57,7 @@ export default function DepartureList() {
       headerName: "Departure Time",
       width: 150,
       renderCell: (params) => {
-        return <> {moment(params.row.departureTime).format("h:mm a")} </>;
+        return <> {params.row.departureTime} </>;
       },
     },
     {
@@ -65,7 +65,7 @@ export default function DepartureList() {
       headerName: "Departure Date",
       width: 150,
       renderCell: (params) => {
-        return <> {moment(params.row.departureDate).format("h:mm a")} </>;
+        return <> {moment(params.row.departureDate).format("MM-DD-YYYY")} </>;
       },
     },
     {
@@ -120,18 +120,19 @@ export default function DepartureList() {
 
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    dispatch(listAllBusDepartures());
+  }, [dispatch]);
+
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete the Product?")) {
-      dispatch(deleteBus(id));
+      dispatch(deleteBusDeparture(id));
     }
   };
 
   const busDepartureAll = useSelector((state) => state.busDepartureAll);
   const { loading, error, buses } = busDepartureAll;
 
-  React.useEffect(() => {
-    dispatch(listAllBusDepartures());
-  }, [dispatch]);
 
   const handleReset = (id) => {
     if (window.confirm("Are you sure you want to reset the Bus?")) {
@@ -155,7 +156,7 @@ export default function DepartureList() {
           component="div"
           style={{ textAlign: "center" }}
         >
-          Bus List
+          Bus Departures List
         </Typography>
         <Grid container spacing={5}>
           <Grid item xs={12}>
