@@ -30,6 +30,7 @@ import moment from "moment";
 import { createBooking, saveBooking } from "../../actions/bookingActions";
 import { toast } from "react-toastify";
 import { BOOKING_CREATE_RESET } from "../../constants/bookingConstants";
+import { listBusesDepatures } from "../../actions/busDepartureActions";
 
 const validationSchema = Yup.object().shape({
   bus: Yup.string().required("Bus is required"),
@@ -48,6 +49,10 @@ const SelectBus = () => {
   const busList = useSelector((state) => state.busList);
   const { buses, loading, error } = busList;
 
+  const busDepartureList = useSelector((state) => state.busDepartureList);
+  const { buses: bs, loading: ld, error: err } = busDepartureList;
+
+  console.log(bs, "bs");
   const busGet = useSelector((state) => state.busGet);
   const { bus } = busGet;
 
@@ -65,8 +70,12 @@ const SelectBus = () => {
     error: errorCreate,
     success,
   } = bookingCreate;
+
   const seatToBooked = useSelector((state) => state.seatToBooked);
   const { loading: loadingUpdate, error: errorUpdate, bus: b } = seatToBooked;
+
+  const saveDetails = useSelector((state) => state.saveDetails);
+  const { details } = saveDetails;
 
   React.useEffect(() => {
     if (!userInfo) {
@@ -75,6 +84,7 @@ const SelectBus = () => {
       });
     }
     dispatch(listBuses());
+
     if (id !== "") {
       dispatch(getBus(id));
     }
@@ -88,17 +98,25 @@ const SelectBus = () => {
         replace: true,
       });
     }
-  }, [userInfo, navigate, id, success, seat, dispatch, booking]);
+    if (details) {
+      dispatch(
+        listBusesDepatures(
+          moment(details.departureDate).format("YYYY-MM-DD"),
+          details.departureTime,
+          details.origin
+        )
+      );
+    }
+  }, [userInfo, navigate, id, success, seat, dispatch, booking, details]);
+
+  console.log(bs && bs[0], "fuck you");
 
   const handleSubmit = (values) => {};
   const { palette } = useTheme();
 
-  const saveDetails = useSelector((state) => state.saveDetails);
-  const { details } = saveDetails;
-
   const handleBooking = () => {
     dispatch(
-      updateSeatToBooked(bus._id, {
+      updateSeatToBooked(bs[0].bus._id, {
         seatNumber: seat,
       })
     );
@@ -119,8 +137,8 @@ const SelectBus = () => {
             seatNumber: seat,
           },
         ],
-        price: 1500,
-        bus: bus._id,
+        price:  bs && bs[0].price,
+        bus: bs && bs[0].bus._id,
       })
     );
   };
@@ -166,39 +184,21 @@ const SelectBus = () => {
                 {error || errorCreate}{" "}
               </Alert>
             ))}
-          <Form
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-            initialValues={{
-              bus: "",
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              margin: "auto",
+              mt: 3,
+              mb: 3,
+              width: "100%",
+            }}
+            onClick={() => {
+              setId(bs && bs[0]._id);
             }}
           >
-            {buses && (
-              <>
-                <FormControl sx={{ mt: 2, mb: 2 }} fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    SelectBus
-                  </InputLabel>
-
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={id}
-                    label={"bus"}
-                    onChange={(e) => setId(e.target.value)}
-                    className="form-note-control-selection"
-                  >
-                    {buses &&
-                      buses.map((itm) => (
-                        <MenuItem selected value={itm._id}>
-                          {itm.name}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
-              </>
-            )}
-          </Form>
+            {bs && bs[0].bus.name}
+          </Button>
           {/* maps all the seats and make them clickable to booking */}
         </Grid>
         <Grid container spacing={3}>
@@ -211,12 +211,11 @@ const SelectBus = () => {
                 flexWrap: "wrap",
               }}
             >
-              {bus &&
-                bus.seats &&
-                bus.seats.map((seat) => (
+              {bs &&
+                bs[0].bus.seats &&
+                bs[0].bus.seats.map((seat) => (
                   <>
                     {/* split into tow rows */}
-
                     <Button
                       onClick={() => {
                         setSeat(seat.seatNumber);
@@ -292,7 +291,7 @@ const SelectBus = () => {
               Origin: {details && details.origin}
             </Typography>
             <Typography variant="h6" component={"div"}>
-              Price: {1500}
+              Price: {bs && bs[0].price}
             </Typography>
             <Typography variant="h6" component={"div"}>
               Destination: {details && details.destination}
@@ -302,14 +301,13 @@ const SelectBus = () => {
               {details && moment(details.departureDate).format("DD-MM-YYYY")}
             </Typography>
             <Typography variant="h6" component={"div"}>
-              Departure time :{" "}
-              {details && moment(details.departureTime).format("hh:mm a")}
+              Departure time : {details && details.departureTime}
             </Typography>
             <Typography variant="h6" component={"div"}>
               Seat Number : {selected ? selected : "No Seat Selected"}
             </Typography>
             <Typography variant="h6" component={"div"}>
-              Bus : {bus ? bus.name : "No Bus Selected"}
+              Bus : {bs ? bs[0].bus.name : "No Bus Selected"}
             </Typography>
             <Button
               variant="contained"

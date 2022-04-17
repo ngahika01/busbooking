@@ -47,7 +47,7 @@ export const createBusDeparture = (bus) => async (dispatch, getState) => {
 };
 
 export const listBusesDepatures =
-  ({ departureDate, departureTime, origin }) =>
+  ( departureDate, departureTime, origin ) =>
   async (dispatch, getState) => {
     try {
       dispatch({

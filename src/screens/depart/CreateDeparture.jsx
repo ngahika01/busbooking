@@ -33,6 +33,7 @@ import InputComponent from "../../components/form/InputComponent";
 import { createBusDeparture } from "../../actions/busDepartureActions";
 import CustomDatePicker from "../../components/form/CustomDatePicker";
 import { BUS_DEPARTURE_CREATE_RESET } from "../../constants/busDepartureConstants";
+import moment from "moment"
 
 const validationSchema = Yup.object().shape({
   bus: Yup.string().required("Bus is required"),
@@ -82,7 +83,7 @@ const CreateDeparture = () => {
     dispatch(
       createBusDeparture({
         bus,
-        departureDate,
+        departureDate: moment(departureDate).format("YYYY-MM-DD"),
         departureTime,
         price,
         origin,

@@ -27,7 +27,10 @@ import { deleteBus, listBuses, resetBus } from "../../actions/busActions";
 import DataGridComponent from "../../components/DataGridComponent";
 import NavBar from "../../components/NavBar";
 import { DataGrid } from "@mui/x-data-grid";
-import { deleteBusDeparture, listAllBusDepartures } from "../../actions/busDepartureActions";
+import {
+  deleteBusDeparture,
+  listAllBusDepartures,
+} from "../../actions/busDepartureActions";
 import moment from "moment";
 
 export default function DepartureList() {
@@ -119,6 +122,10 @@ export default function DepartureList() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  const busDepartureAll = useSelector((state) => state.busDepartureAll);
+  const { loading, error, buses } = busDepartureAll;
+  const busDepartureDelete = useSelector((state) => state.busDepartureDelete);
+  const { loading: ld } = busDepartureDelete;
 
   React.useEffect(() => {
     dispatch(listAllBusDepartures());
@@ -129,10 +136,6 @@ export default function DepartureList() {
       dispatch(deleteBusDeparture(id));
     }
   };
-
-  const busDepartureAll = useSelector((state) => state.busDepartureAll);
-  const { loading, error, buses } = busDepartureAll;
-
 
   const handleReset = (id) => {
     if (window.confirm("Are you sure you want to reset the Bus?")) {
@@ -166,7 +169,7 @@ export default function DepartureList() {
                 width: "100%",
               }}
             >
-              {loading && (
+              {loading || ld && (
                 <Backdrop
                   sx={{
                     color: "#fff",
