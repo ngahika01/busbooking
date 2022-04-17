@@ -32,9 +32,10 @@ import {
   paymentUpdateToPaidReducer,
 } from "./reducers/paymentReducers";
 import {
+  busDepartureAllReducer,
   busDepartureCreateReducer,
   busDepartureDeleteReducer,
-  busDepartureListReducer
+  busDepartureListReducer,
 } from "./reducers/busDepartureReducers";
 
 const reducer = combineReducers({
@@ -49,6 +50,7 @@ const reducer = combineReducers({
   busDeparture: busDepartureCreateReducer,
   busDepartureList: busDepartureListReducer,
   busDepartureDelete: busDepartureDeleteReducer,
+  busDepartureAll: busDepartureAllReducer,
   saveDetails: saveDetailsReducer,
   bookingCreate: bookingCreateReducer,
   bookingDelete: bookingDeleteReducer,

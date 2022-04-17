@@ -2,6 +2,9 @@ import axios from "axios";
 import { url } from "../config/url";
 import { logout } from "./userActions";
 import {
+  BUS_DEPARTURE_ALL_FAIL,
+  BUS_DEPARTURE_ALL_REQUEST,
+  BUS_DEPARTURE_ALL_SUCCESS,
   BUS_DEPARTURE_CREATE_FAIL,
   BUS_DEPARTURE_CREATE_REQUEST,
   BUS_DEPARTURE_CREATE_SUCCESS,
@@ -61,9 +64,10 @@ export const listBusesDepatures =
         },
       };
 
-      const { data } = await axios.get(`${url}/departures?departureDate=${departureDate}&departureTime=${departureTime}&origin=${origin}`, config);
-      
-      
+      const { data } = await axios.get(
+        `${url}/departures?departureDate=${departureDate}&departureTime=${departureTime}&origin=${origin}`,
+        config
+      );
 
       dispatch({
         type: BUS_DEPARTURE_LIST_SUCCESS,
@@ -98,7 +102,11 @@ export const updateBusDeparture = (bus) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.put(`${url}/departures/${bus._id}`, bus, config);
+    const { data } = await axios.put(
+      `${url}/departures/${bus._id}`,
+      bus,
+      config
+    );
     dispatch({
       type: BUS_DEPARTURE_UPDATE_SUCCESS,
       payload: data,
@@ -149,3 +157,47 @@ export const deleteBusDeparture = (id) => async (dispatch, getState) => {
     });
   }
 };
+
+export const listAllBusDepartures =
+  () =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: BUS_DEPARTURE_ALL_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `${url}/departures/all`,
+        config
+      );
+
+      dispatch({
+        type: BUS_DEPARTURE_ALL_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+        dispatch(logout());
+      }
+      console.log(message);
+
+      dispatch({
+        type: BUS_DEPARTURE_ALL_FAIL,
+        payload: message,
+      });
+    }
+  };

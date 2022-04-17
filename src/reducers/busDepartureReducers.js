@@ -17,7 +17,9 @@ import {
   BUS_DEPARTURE_DELETE_SUCCESS,
   BUS_DEPARTURE_DELETE_FAIL,
   BUS_DEPARTURE_DELETE_RESET,
-
+  BUS_DEPARTURE_ALL_REQUEST,
+  BUS_DEPARTURE_ALL_SUCCESS,
+  BUS_DEPARTURE_ALL_FAIL,
 } from "../constants/busDepartureConstants";
 
 export const busDepartureCreateReducer = (state = {}, action) => {
@@ -111,4 +113,15 @@ export const busDepartureDeleteReducer = (state = {}, action) => {
   }
 };
 
-
+export const busDepartureAllReducer = (state = {}, action) => {
+  switch (action.type) {
+    case BUS_DEPARTURE_ALL_REQUEST:
+      return { loading: true };
+    case BUS_DEPARTURE_ALL_SUCCESS:
+      return { loading: false, success: true, buses: action.payload };
+    case BUS_DEPARTURE_ALL_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
