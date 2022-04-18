@@ -46,7 +46,6 @@ const App = () => {
               <Route path="/bookings" element={<BookingsScreen />} />
               <Route path="/about" element={<AboutScreen />} />
               <Route path="/reciept" element={<PaymentList />} />
-              <Route path="*" element={<LoginScreen />} />
             </Routes>
           </Router>
         </Grid>

@@ -81,7 +81,6 @@ export const listBusesDepatures =
       if (message === "Not authorized, token failed") {
         dispatch(logout());
       }
-      console.log(message);
 
       dispatch({
         type: BUS_DEPARTURE_LIST_FAIL,

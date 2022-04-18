@@ -137,7 +137,7 @@ const SelectBus = () => {
             seatNumber: seat,
           },
         ],
-        price:  bs && bs[0].price,
+        price: bs && bs[0].price,
         bus: bs && bs[0].bus._id,
       })
     );
@@ -184,21 +184,46 @@ const SelectBus = () => {
                 {error || errorCreate}{" "}
               </Alert>
             ))}
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{
-              margin: "auto",
-              mt: 3,
-              mb: 3,
-              width: "100%",
-            }}
-            onClick={() => {
-              setId(bs && bs[0]._id);
-            }}
-          >
-            {bs && bs[0].bus.name}
-          </Button>
+          <Grid item xs={12}>
+            {bs && bs.length > 0 ? (
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{
+                  margin: "auto",
+                  mt: 3,
+                  mb: 3,
+                  width: "100%",
+                }}
+                onClick={() => {
+                  setId(bs && bs[0]._id);
+                }}
+              >
+                {bs && bs[0].bus.name}
+              </Button>
+            ) : (
+              <>
+                <Typography
+                  sx={{
+                    textAlign: "center",
+                  }}
+                  variant="h2"
+                  component={"div"}
+                >
+                  No buses available
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    navigate("/home");
+                  }}
+                >
+                  Go back
+                </Button>
+              </>
+            )}
+          </Grid>
           {/* maps all the seats and make them clickable to booking */}
         </Grid>
         <Grid container spacing={3}>
@@ -212,6 +237,7 @@ const SelectBus = () => {
               }}
             >
               {bs &&
+                bs.length > 0 &&
                 bs[0].bus.seats &&
                 bs[0].bus.seats.map((seat) => (
                   <>
@@ -291,7 +317,7 @@ const SelectBus = () => {
               Origin: {details && details.origin}
             </Typography>
             <Typography variant="h6" component={"div"}>
-              Price: {bs && bs[0].price}
+              Price: {bs && bs.length > 0 && bs[0].price}
             </Typography>
             <Typography variant="h6" component={"div"}>
               Destination: {details && details.destination}
@@ -307,7 +333,7 @@ const SelectBus = () => {
               Seat Number : {selected ? selected : "No Seat Selected"}
             </Typography>
             <Typography variant="h6" component={"div"}>
-              Bus : {bs ? bs[0].bus.name : "No Bus Selected"}
+              Bus : {bs && bs.length > 0 ? bs[0].bus.name : "No Bus Selected"}
             </Typography>
             <Button
               variant="contained"
